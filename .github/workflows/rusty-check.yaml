@@ -1,0 +1,21 @@
+name: Rusty Check
+on:
+  pull_request: {}
+  push:
+    branches: [main]
+
+permissions: read-all
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 2
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo run --profile=release --bin trunk_cli -- check --upstream=HEAD^1
+      # Print the server log
+      - run: cat $(cargo run --profile=release --bin trunk_cli -- paths | jq -r .server_stderr_file)
