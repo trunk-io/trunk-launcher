@@ -17,4 +17,4 @@ jobs:
           fetch-depth: 2
       - run: ./tk.sh check --upstream=HEAD^1
       # Print the server log
-      - run: cat $(cargo run --profile=release --bin trunk_cli -- paths | jq -r .server_stderr_file)
+      - run: cat $(./tk.sh paths | jq -r .server_stderr_file)
